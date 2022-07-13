@@ -139,6 +139,13 @@ func (c *vercelClient) Call(req apiRequest) error {
 	if req.ResponseTarget == nil {
 		return nil
 	}
+
+	/*
+		bodyBytes, err := io.ReadAll(httpResponse.Body)
+		bodyString := string(bodyBytes)
+		panic(bodyString)
+	*/
+
 	err = json.NewDecoder(httpResponse.Body).Decode(req.ResponseTarget)
 	if err != nil {
 		return fmt.Errorf("Unable to unmarshal response: %w", err)

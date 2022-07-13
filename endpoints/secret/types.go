@@ -12,18 +12,33 @@ type Secret struct {
 
 	// The date when the secret was created (timestamp).
 	CreatedAt int `json:"createdAt"`
+
+	// The unique identifier of the team the secret was created for.
+	TeamID string `json:"teamId,omitempty"`
+
+	// The unique identifier of the user who created the secret.
+	UserID string `json:"userId,omitempty"`
+
+	// The value of the secret.
+	Value string `json:"value,omitempty"`
+
+	// The unique identifier of the project which the secret belongs to.
+	ProjectID string `json:"projectId,omitempty"`
+
+	// Indicates whether the secret value can be decrypted after it has been created.
+	Decryptable bool `json:"decryptable,omitempty"`
 }
 
 type ListSecretsRequest struct {
-	// Maximum number of domains to list from a request.
+	// Maximum number of secrets to list from a request.
 	// Required: No
 	Limit int `json:"limit,omitempty"`
 
-	// Get domains created after this JavaScript timestamp.
+	// Get secrets created after this JavaScript timestamp.
 	// Required: No
 	Since int `json:"since,omitempty"`
 
-	// Get domains created before this JavaScript timestamp.
+	// Get secrets created before this JavaScript timestamp.
 	// Required: No
 	Until int `json:"until,omitempty"`
 }
@@ -48,6 +63,9 @@ type GetSecretRequest struct {
 	Id string
 }
 
+type GetSecretResponse Secret
+
+/*
 type GetSecretResponse struct {
 	// The unique identifier of the secret.
 	Uid string `json:"uid"`
@@ -67,6 +85,7 @@ type GetSecretResponse struct {
 	// The date when the secret was created in milliseconds since the UNIX epoch.
 	CreatedAt int `json:"createdAt"`
 }
+*/
 
 type CreateSecretsRequest struct {
 	// The name of the secret (max 100 characters).

@@ -26,7 +26,7 @@ func TestGetTeamWithSlug(t *testing.T) {
 func TestGetTeamWithid(t *testing.T) {
 	handler := team.New(api.New(api.NewClientConfig{Token: os.Getenv("VERCEL_TOKEN")}))
 
-	res, err := handler.Get(team.GetTeamRequest{Id: "team_ZYPNERZjT0L9LkPdP0Y9ZtS2"})
+	res, err := handler.Get(team.GetTeamRequest{ID: "team_ZYPNERZjT0L9LkPdP0Y9ZtS2"})
 
 	require.NoError(t, err)
 	require.True(t, len(res.Name) > 0)

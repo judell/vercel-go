@@ -181,6 +181,10 @@ type Project struct {
 			WithCache  bool   `json:"withCache"`
 		} `json:"production"`
 	} `json:"targets"`
+	PasswordProtection interface{} `json:"passwordProtection,omitempty"`
+	SSOProtection      interface{} `json:"ssoProtection,omitempty"`
+	Live               bool        `json:"live,omitempty"`
+	Permissions        interface{} `json:"permissions,omitempty"`
 }
 
 type CreateProjectRequest struct {
@@ -222,7 +226,12 @@ type ListProjectsRequest struct {
 	Search string `json:"string,omitempty"`
 }
 type ListProjectsResponse struct {
-	Projects []Project `json:"projects"`
+	Projects   []Project `json:"projects"`
+	Pagination struct {
+		Count int   `json:"count"`
+		Next  int64 `json:"next"`
+		Prev  int64 `json:"prev"`
+	} `json:"pagination"`
 }
 
 type GetProjectResponse struct {
@@ -362,6 +371,7 @@ type UpdateEnvironmentVariableRequest struct {
 	// Required: No
 	GitBranch string `json:"gitBranch,omitempty"`
 }
+
 type UpdateEnvironmentVariableResponse struct {
 	Type            string   `json:"type"`
 	Id              string   `json:"id"`

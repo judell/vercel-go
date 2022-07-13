@@ -27,7 +27,7 @@ type ListDnsRequest struct {
 }
 
 type Record struct {
-	Id         string `json:"id"`
+	ID         string `json:"id"`
 	Slug       string `json:"slug"`
 	Name       string `json:"name"`
 	Type       string `json:"type"`
@@ -39,10 +39,11 @@ type Record struct {
 	Updated    int    `json:"updated,omitempty"`
 	CreatedAt  int    `json:"createdAt,omitempty"`
 	UpdatedAt  int    `json:"updatedAt,omitempty"`
+	TTL        int    `json:"ttl,omitempty"`
 }
-type ListDnsResponse struct {
-	Records []Record `json:"records"`
 
+type ListDnsResponse struct {
+	Records    []Record `json:"records"`
 	Pagination struct {
 		Count int   `json:"count"`
 		Next  int64 `json:"next"`

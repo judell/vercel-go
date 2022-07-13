@@ -20,9 +20,18 @@ func New(vercelClient api.VercelClient, teamid string) *SecretHandler {
 
 // Retrieves the active now secrets for the authenticating user.
 func (h *SecretHandler) ListSecrets(req ListSecretsRequest) (res ListSecretsResponse, err error) {
-	apiRequest := api.NewApiRequest("GET", "/v3/now/secrets", &res)
+	apiRequest := api.NewApiRequest("GET", "/v2/secrets", &res)
 	if h.teamid != "" {
 		apiRequest.Query.Add("teamId", h.teamid)
+	}
+	if req.Limit != 0 {
+		apiRequest.Query.Add("limit", fmt.Sprintf("%d", req.Limit))
+	}
+	if req.Until != 0 {
+		apiRequest.Query.Add("until", fmt.Sprintf("%d", req.Until))
+	}
+	if req.Since != 0 {
+		apiRequest.Query.Add("since", fmt.Sprintf("%d", req.Since))
 	}
 	err = h.vercelClient.Call(apiRequest)
 
@@ -35,7 +44,7 @@ func (h *SecretHandler) ListSecrets(req ListSecretsRequest) (res ListSecretsResp
 // Get the information for a specific secret by passing either the secret id or name.
 func (h *SecretHandler) GetSecret(secretIdOrName string) (res GetSecretResponse, err error) {
 
-	path := fmt.Sprintf("/v3/now/secrets/%s", secretIdOrName)
+	path := fmt.Sprintf("/v2/secrets/%s", secretIdOrName)
 
 	apiRequest := api.NewApiRequest("GET", path, &res)
 	if h.teamid != "" {

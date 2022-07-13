@@ -20,7 +20,7 @@ func New(vercelClient api.VercelClient, teamid string) *ProjectHandler {
 
 // Create a new project
 func (h *ProjectHandler) Create(req CreateProjectRequest) (res CreateProjectResponse, err error) {
-	apiRequest := api.NewApiRequest("POST", "/v8/projects", &res)
+	apiRequest := api.NewApiRequest("POST", "/v9/projects", &res)
 	apiRequest.Body = req
 	if h.teamid != "" {
 		apiRequest.Query.Add("teamId", h.teamid)
@@ -37,9 +37,18 @@ func (h *ProjectHandler) Create(req CreateProjectRequest) (res CreateProjectResp
 // using the pagination options described below.
 // NOTE: The order is always based on the updatedAt field of the project.
 func (h *ProjectHandler) List(req ListProjectsRequest) (res ListProjectsResponse, err error) {
-	apiRequest := api.NewApiRequest("GET", "/v8/projects", &res)
+	apiRequest := api.NewApiRequest("GET", "/v9/projects", &res)
 	if h.teamid != "" {
 		apiRequest.Query.Add("teamId", h.teamid)
+	}
+	if req.Limit != 0 {
+		apiRequest.Query.Add("limit", fmt.Sprintf("%d", req.Limit))
+	}
+	if req.Until != 0 {
+		apiRequest.Query.Add("until", fmt.Sprintf("%d", req.Until))
+	}
+	if req.Since != 0 {
+		apiRequest.Query.Add("since", fmt.Sprintf("%d", req.Since))
 	}
 	err = h.vercelClient.Call(apiRequest)
 	if err != nil {
@@ -52,7 +61,7 @@ func (h *ProjectHandler) List(req ListProjectsRequest) (res ListProjectsResponse
 // or name in the URL.
 func (h *ProjectHandler) Get(projectIdOrName string) (res GetProjectResponse, err error) {
 
-	path := fmt.Sprintf("/v8/projects/%s", projectIdOrName)
+	path := fmt.Sprintf("/v9/projects/%s", projectIdOrName)
 
 	apiRequest := api.NewApiRequest("GET", path, &res)
 	if h.teamid != "" {
@@ -69,7 +78,7 @@ func (h *ProjectHandler) Get(projectIdOrName string) (res GetProjectResponse, er
 // or name in the URL.
 func (h *ProjectHandler) Delete(projectIdOrName string) (res DeleteProjectResponse, err error) {
 
-	path := fmt.Sprintf("/v8/projects/%s", projectIdOrName)
+	path := fmt.Sprintf("/v9/projects/%s", projectIdOrName)
 
 	apiRequest := api.NewApiRequest("DELETE", path, nil)
 	if h.teamid != "" {
@@ -85,7 +94,7 @@ func (h *ProjectHandler) Delete(projectIdOrName string) (res DeleteProjectRespon
 // Update the fields of a project using either its name or id.
 func (h *ProjectHandler) Update(projectIdOrName string, req UpdateProjectRequest) (res UpdateProjectResponse, err error) {
 
-	path := fmt.Sprintf("/v8/projects/%s", projectIdOrName)
+	path := fmt.Sprintf("/v9/projects/%s", projectIdOrName)
 
 	apiRequest := api.NewApiRequest("PATCH", path, &res)
 	if h.teamid != "" {
@@ -102,7 +111,7 @@ func (h *ProjectHandler) Update(projectIdOrName string, req UpdateProjectRequest
 // Update the fields of a project using either its name or id.
 func (h *ProjectHandler) CreateEnvironmentVariable(projectIdOrName string, req CreateEnvironmentVariableRequest) (res CreateEnvironmentVariableResponse, err error) {
 
-	path := fmt.Sprintf("/v8/projects/%s/env", projectIdOrName)
+	path := fmt.Sprintf("/v9/projects/%s/env", projectIdOrName)
 
 	apiRequest := api.NewApiRequest("POST", path, &res)
 	if h.teamid != "" {
@@ -119,7 +128,7 @@ func (h *ProjectHandler) CreateEnvironmentVariable(projectIdOrName string, req C
 // Update the fields of a project using either its name or id.
 func (h *ProjectHandler) DeleteEnvironmentVariable(req DeleteEnvironmentVariableRequest) (res DeleteEnvironmentVariableResponse, err error) {
 
-	path := fmt.Sprintf("/v8/projects/%s/env/%s", req.Projectid, req.Envid)
+	path := fmt.Sprintf("/v9/projects/%s/env/%s", req.Projectid, req.Envid)
 
 	apiRequest := api.NewApiRequest("DELETE", path, nil)
 	if h.teamid != "" {
@@ -135,7 +144,7 @@ func (h *ProjectHandler) DeleteEnvironmentVariable(req DeleteEnvironmentVariable
 // Update the fields of a project using either its name or id.
 func (h *ProjectHandler) UpdateEnvironmentVariable(projectNameOrId string, req UpdateEnvironmentVariableRequest) (res UpdateEnvironmentVariableResponse, err error) {
 
-	path := fmt.Sprintf("/v8/projects/%s/env/%s", projectNameOrId, req.Envid)
+	path := fmt.Sprintf("/v9/projects/%s/env/%s", projectNameOrId, req.Envid)
 
 	apiRequest := api.NewApiRequest("PATCH", path, &res)
 	if h.teamid != "" {
@@ -152,7 +161,7 @@ func (h *ProjectHandler) UpdateEnvironmentVariable(projectNameOrId string, req U
 // Update the fields of a project using either its name or id.
 func (h *ProjectHandler) AddDomain(projectIdOrName string, req AddDomainRequest) (res Domain, err error) {
 
-	path := fmt.Sprintf("/v8/projects/%s/domains", projectIdOrName)
+	path := fmt.Sprintf("/v9/projects/%s/domains", projectIdOrName)
 
 	apiRequest := api.NewApiRequest("POST", path, &res)
 	if h.teamid != "" {
@@ -168,7 +177,7 @@ func (h *ProjectHandler) AddDomain(projectIdOrName string, req AddDomainRequest)
 
 func (h *ProjectHandler) GetDomain(projectIdOrName string, domain string) (res Domain, err error) {
 
-	path := fmt.Sprintf("/v8/projects/%s/domains/%s", projectIdOrName, domain)
+	path := fmt.Sprintf("/v9/projects/%s/domains/%s", projectIdOrName, domain)
 
 	apiRequest := api.NewApiRequest("GET", path, &res)
 	if h.teamid != "" {
@@ -184,7 +193,7 @@ func (h *ProjectHandler) GetDomain(projectIdOrName string, domain string) (res D
 // Update the fields of a project using either its name or id.
 func (h *ProjectHandler) UpdateDomain(projectNameOrId string, req UpdateDomainRequest) (res Domain, err error) {
 
-	path := fmt.Sprintf("/v8/projects/%s/domains/%s", projectNameOrId, req.Name)
+	path := fmt.Sprintf("/v9/projects/%s/domains/%s", projectNameOrId, req.Name)
 
 	apiRequest := api.NewApiRequest("PATCH", path, &res)
 	if h.teamid != "" {
@@ -199,7 +208,7 @@ func (h *ProjectHandler) UpdateDomain(projectNameOrId string, req UpdateDomainRe
 }
 
 func (h *ProjectHandler) ListDomains(projectIdOrName string, req ListDomainsRequest) (res ListDomainsResponse, err error) {
-	apiRequest := api.NewApiRequest("GET", fmt.Sprintf("/v8/projects/%s/domains", projectIdOrName), &res)
+	apiRequest := api.NewApiRequest("GET", fmt.Sprintf("/v9/projects/%s/domains", projectIdOrName), &res)
 	if h.teamid != "" {
 		apiRequest.Query.Add("teamId", h.teamid)
 	}

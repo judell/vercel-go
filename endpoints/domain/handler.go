@@ -25,6 +25,15 @@ func (h *DomainHandler) List(req ListDomainsRequest) (res ListDomainsResponse, e
 	if h.teamid != "" {
 		apiRequest.Query.Add("teamId", h.teamid)
 	}
+	if req.Limit != 0 {
+		apiRequest.Query.Add("limit", fmt.Sprintf("%d", req.Limit))
+	}
+	if req.Until != 0 {
+		apiRequest.Query.Add("until", fmt.Sprintf("%d", req.Until))
+	}
+	if req.Since != 0 {
+		apiRequest.Query.Add("since", fmt.Sprintf("%d", req.Since))
+	}
 
 	err = h.vercelClient.Call(apiRequest)
 
