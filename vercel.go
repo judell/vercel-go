@@ -2,6 +2,7 @@ package vercel
 
 import (
 	"github.com/chronark/vercel-go/api"
+	"github.com/chronark/vercel-go/endpoints/deployment"
 	"github.com/chronark/vercel-go/endpoints/dns"
 	"github.com/chronark/vercel-go/endpoints/domain"
 	"github.com/chronark/vercel-go/endpoints/project"
@@ -16,6 +17,7 @@ type Client struct {
 	Team    *team.TeamHandler
 	User    *user.UserHandler
 	Project *project.ProjectHandler
+	Deployment *deployment.DeploymentHandler
 	Dns     *dns.DnsHandler
 }
 
@@ -36,6 +38,7 @@ func New(config NewClientConfig) *Client {
 		Team:    team.New(api),
 		User:    user.New(api),
 		Project: project.New(api, config.Teamid),
+		Deployment: deployment.New(api, config.Teamid),
 		Dns:     dns.New(api, config.Teamid),
 	}
 }
