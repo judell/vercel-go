@@ -1,7 +1,6 @@
 package deployment_test
 
 import (
-	"fmt"
 	"os"
 	"testing"
 
@@ -47,4 +46,29 @@ func TestListDeployments(t *testing.T) {
 	}
 }
 
+func TestListDeploymentsPaginated(t *testing.T) {
+	max := 227
+	req := deployment.ListDeploymentsRequest{Limit: 100}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 
+			total := 0
+			for {
+				res, err := tt.handler.List(req)
+				require.NoError(t, err)
+				for i := 0; i <= len(res.Deployments); i++ {
+					total += 1
+					if total == max {
+						break
+					}
+				}
+				if total == max {
+					break
+				}
+				req.Until = int(res.Pagination.Next)
+			}
+
+			require.True(t, total == max)
+		})
+	}
+}

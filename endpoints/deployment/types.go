@@ -43,6 +43,9 @@ type ListDeploymentsRequest struct {
 	// Maximum number of records to list from a request.
 	// Required: No
 	Limit int
+	// Get records created before this JavaScript timestamp.
+	// Required: No
+	Until int
 }
 
 type ListDeploymentsResponse struct {
