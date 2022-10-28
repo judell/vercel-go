@@ -62,10 +62,10 @@ func TestListDeploymentsPaginated(t *testing.T) {
 						break
 					}
 				}
+				req.Until = int(res.Pagination.Next)
 				if total == max {
 					break
 				}
-				req.Until = int(res.Pagination.Next)
 			}
 
 			require.True(t, total == max)
