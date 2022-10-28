@@ -35,8 +35,11 @@ func (h *DeploymentHandler) ListDeployments() (res ListDeploymentsResponse, err 
 // By default, it returns the last 20 Deployments. The rest can be retrieved
 // using the pagination options described below.
 // NOTE: The order is always based on the updatedAt field of the Deployment.
-func (h *DeploymentHandler) List() (res ListDeploymentsResponse, err error) {
+func (h *DeploymentHandler) List(req ListDeploymentsRequest) (res ListDeploymentsResponse, err error) {
 	apiRequest := api.NewApiRequest("GET", "/v6/Deployments", &res)
+	if req.Limit != 0 {
+		apiRequest.Query.Add("limit", fmt.Sprintf("%d", req.Limit))
+	}
 	if h.teamid != "" {
 		apiRequest.Query.Add("teamId", h.teamid)
 	}

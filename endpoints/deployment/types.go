@@ -40,6 +40,9 @@ type Deployment struct {
 	}
 
 type ListDeploymentsRequest struct {
+	// Maximum number of records to list from a request.
+	// Required: No
+	Limit int
 }
 
 type ListDeploymentsResponse struct {
