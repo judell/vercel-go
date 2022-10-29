@@ -39,14 +39,19 @@ type Deployment struct {
 		Ready               int64       `json:"ready"`
 	}
 
-type ListDeploymentsRequest struct {
-	// Maximum number of records to list from a request.
-	// Required: No
-	Limit int
-	// Get records created before this JavaScript timestamp.
-	// Required: No
-	Until int
-}
+	type ListDeploymentsRequest struct {
+		// Limit the number of deployments returned.
+		// Required: No
+		Limit int64 `json:"limit,omitempty"`
+
+		// Start timestamp (Unix millis)
+		// Required: No
+		Since int64 `json:"since,omitempty"`
+
+		// End timestamp (Unix millis)
+		// Required: No
+		Until int64 `json:"until,omitempty"`
+	}
 
 type ListDeploymentsResponse struct {
 	Deployments   []Deployment `json:"deployments"`

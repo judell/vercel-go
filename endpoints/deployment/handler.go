@@ -40,6 +40,12 @@ func (h *DeploymentHandler) List(req ListDeploymentsRequest) (res ListDeployment
 	if req.Limit != 0 {
 		apiRequest.Query.Add("limit", fmt.Sprintf("%d", req.Limit))
 	}
+	if req.Since != 0 {
+		apiRequest.Query.Add("since", fmt.Sprintf("%d", req.Since))
+	}
+	if req.Until != 0 {
+		apiRequest.Query.Add("until", fmt.Sprintf("%d", req.Until))
+	}
 	if h.teamid != "" {
 		apiRequest.Query.Add("teamId", h.teamid)
 	}
