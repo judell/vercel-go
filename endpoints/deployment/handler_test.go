@@ -62,7 +62,7 @@ func TestListDeploymentsPaginated(t *testing.T) {
 						break
 					}
 				}
-				req.Until = int(res.Pagination.Next)
+				req.Until = int64(res.Pagination.Next)
 				if total == max {
 					break
 				}
@@ -72,3 +72,4 @@ func TestListDeploymentsPaginated(t *testing.T) {
 		})
 	}
 }
+
